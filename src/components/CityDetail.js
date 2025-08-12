@@ -1,6 +1,6 @@
-export default function CitiDetail() {
+export default function CityDetail() {
   this.$target = document.createElement("div");
-  this.$target.className = "CitiDetail";
+  this.$target.className = "CityDetail";
 
   this.template = () => {};
 
