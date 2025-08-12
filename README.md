@@ -6,6 +6,8 @@
 
 ## 📖 소개
 
+> local 실행 : node ./server/server.js
+
 ## ✨ 주요 기능
 
 -
@@ -14,8 +16,8 @@
 
 ## 🛠 기술 스택
 
-| 분야     | 사용 기술              |
-| -------- | ---------------------- |
-| Frontend | Javascript , Html, Css |
-| Backend  | Node.js                |
-| Tools    | Git, GitHub            |
+| 분야     | 사용 기술               |
+| -------- | ----------------------- |
+| Frontend | Javascript , HTML , CSS |
+| Backend  | Node.js , Express 5     |
+| Tools    | Git, GitHub             |
