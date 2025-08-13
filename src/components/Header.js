@@ -8,9 +8,10 @@ export default function Header({ $app, initialState, handleSortChange, handleSea
   $app.appendChild(this.$target);
 
   this.template = () => {
-    const { sortBy, searchWord } = this.state;
-    let temp = `<div class="title"><a href="/">🛫🛫 Trip Wiki</a></div>
-    <div class="filter-search-container"> 
+    const { sortBy, searchWord, currentPage } = this.state;
+    let temp = `<div class="title"><a href="/">🛫🛫 Trip Wiki</a></div>`;
+    if (!currentPage.includes("/city/")) {
+      temp += `<div class="filter-search-container"> 
       <div class="filter">
         <select id="sortList" class="sort-list">
           <option value="total" ${sortBy === "total" ? "selected" : ""}>Total</option>
@@ -26,20 +27,23 @@ export default function Header({ $app, initialState, handleSortChange, handleSea
         <input type="text" placeholder="Search" id="search" autocomplete="off" value="${searchWord}" > </input>
       </div>
     </div>`;
+    }
     return temp;
   };
 
   this.render = () => {
     this.$target.innerHTML = this.template();
-    document.getElementById("sortList").addEventListener("change", () => {
-      this.handleSortChange(event.target.value);
-    });
-    const $searchInput = document.getElementById("search");
-    $searchInput.addEventListener("keydown", () => {
-      if (event.key === "Enter") {
-        this.handleSearch($searchInput.value);
-      }
-    });
+    if (!this.state.currentPage.includes("/city/")) {
+      document.getElementById("sortList").addEventListener("change", () => {
+        this.handleSortChange(event.target.value);
+      });
+      const $searchInput = document.getElementById("search");
+      $searchInput.addEventListener("keydown", () => {
+        if (event.key === "Enter") {
+          this.handleSearch($searchInput.value);
+        }
+      });
+    }
   };
 
   this.setState = (newState) => {

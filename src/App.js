@@ -4,7 +4,7 @@ import RegionList from "./components/RegionList.js";
 import CityList from "./components/CityList.js";
 import CityDetail from "./components/CityDetail.js";
 //API
-import { request } from "./components/api.js";
+import { request, requestCityDetail } from "./components/api.js";
 
 export default function App($app) {
   const getSortBy = () => {
@@ -37,6 +37,7 @@ export default function App($app) {
         currentPage: this.state.currentPage,
         sortBy: this.state.sortBy,
         searchWord: this.state.searchWord,
+        currentPage: this.state.currentPage,
       },
       handleSortChange: async (sortBy) => {
         const pageUrl = `/${this.state.region}?sort=${sortBy}`;
@@ -109,7 +110,17 @@ export default function App($app) {
     });
   };
 
-  const renderCityDetail = () => {};
+  const renderCityDetail = async (cityId) => {
+    try {
+      const cityDetailData = await requestCityDetail(cityId);
+      new CityDetail({
+        $app,
+        initialState: cityDetailData,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const render = async () => {
     const path = this.state.currentPage;
