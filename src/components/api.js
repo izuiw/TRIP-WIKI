@@ -5,7 +5,7 @@ export const request = async (startIdx, region, sortBy, searchWord) => {
   try {
     let url = `${API_URL}`;
     if (region && region !== "All") {
-      url += `${region}?start=${startIdx}`;
+      url += `/${region}?start=${startIdx}`;
     } else {
       url += `?start=${startIdx}`;
     }
@@ -17,7 +17,7 @@ export const request = async (startIdx, region, sortBy, searchWord) => {
     if (searchWord) {
       url += `&search=${searchWord}`;
     }
-
+    // debugger
     const response = await fetch(url);
     if (response) {
       let data = await response.json();

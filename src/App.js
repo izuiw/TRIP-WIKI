@@ -58,7 +58,23 @@ export default function ($app) {
   });
 
   //regionList components (도시 키워드 나열)
-  const regionList = new RegionList();
+  const regionList = new RegionList({
+    $app,
+    initialState: this.state.region,
+    handleRegion: async (region) => {
+      history.pushState(null, null, `/${region}?sort=total`);
+      const cities = await request(0, region, "total");
+      this.setState({
+        ...this.state,
+        startIdx: 0,
+        sortBy: "total",
+        region: region,
+        cities: cities,
+        searchWord: "",
+        currentPage: `/${region}`,
+      });
+    },
+  });
 
   //cityList components (목록)
   const cityList = new CityList({
@@ -86,6 +102,7 @@ export default function ($app) {
     this.state = newState;
     cityList.setState(this.state.cities);
     header.setState({ sortBy: this.state.sortBy, searchWord: this.state.searchWord });
+    regionList.setState(this.state.region);
   };
 
   //init function
@@ -96,6 +113,27 @@ export default function ($app) {
       cities: cities,
     });
   };
+
+  window.addEventListener("popstate", async () => {
+    const urlPath = window.location.pathname;
+
+    const prevRegion = urlPath.replace("/", "");
+    const prevPage = urlPath;
+    const prevSortBy = getSortBy();
+    const prevSearchWord = getSearchWord();
+    const prevStartIdx = 0;
+    const prevCities = await request(prevStartIdx, prevRegion, prevSortBy, prevSearchWord);
+
+    this.setState({
+      ...this.state,
+      startIdx: prevStartIdx,
+      sortBy: prevSortBy,
+      region: prevRegion,
+      currentPage: prevPage,
+      searchWord: prevSearchWord,
+      cities: prevCities,
+    });
+  });
 
   init();
 }
